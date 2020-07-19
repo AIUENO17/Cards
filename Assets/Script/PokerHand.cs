@@ -30,8 +30,6 @@ public class PokerHand
             {
                 cardsElement++;
                 kinds += card.Count();
-                kinds += card.Count();
-                kinds += card.Count();
             }
         }
 
