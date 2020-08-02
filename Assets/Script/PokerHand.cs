@@ -16,6 +16,7 @@ public class PokerHand
         StraightFlush,
         RoyalFlush
     }
+    public static int HighCard = 0;
     public static Hand CardHand(List<Card> cards)
     {
 
@@ -29,6 +30,9 @@ public class PokerHand
             if (card.Count() > 1)
             {
                 cardsElement++;
+
+                kinds += card.Count();
+                HighCard = card.FirstOrDefault().Number;
                 kinds += card.Count();
             }
         }
@@ -146,6 +150,7 @@ public class PokerHand
         {
             return Hand.OnePair;
         }
+        HighCard = cards[4].Number;
         return Hand.None;
         #endregion
     }

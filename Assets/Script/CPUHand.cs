@@ -13,16 +13,26 @@ public class CPUHand : MonoBehaviour
     private List<Card> m_cpuHand = new List<Card>();
     public PokerHand.Hand CPUJudgeHand = PokerHand.Hand.None;
 
+    private GameObject[] m_CPUCardSelectAnimators = new GameObject[5];
 
+    public int CPUHightCardNumber = 0;
 
-
-    private void Update()
+    private void Awake()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        for (int i = 0;i <m_cpuCards.Count;i++)
         {
-            CPUJudgeHand = PokerHand.CardHand(m_cpuHand);
+            m_cpuCards[i].GetComponentInChildren<Animator>().gameObject.SetActive(false);
+
         }
     }
+
+    public void CPUJudgeCard()
+    {
+        CPUJudgeHand = PokerHand.CardHand(m_cpuHand);
+        CPUHightCardNumber = PokerHand.HighCard;
+    }
+
+    
 
     private void CardUpDate(bool judge = false)
     {
@@ -32,9 +42,13 @@ public class CPUHand : MonoBehaviour
             if (judge)
             {
                 m_cpuCards[i].GetComponentInChildren<Image>().sprite = m_cardAtlas.GetSprite($"Card_{card.Num}");
+
             }
             else
             {
+
+            
+            
                 m_cpuCards[i].GetComponentInChildren<Image>().sprite = m_cardAtlas.GetSprite($"Card_54");
             }
 

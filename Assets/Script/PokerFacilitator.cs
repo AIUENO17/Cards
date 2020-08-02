@@ -6,6 +6,7 @@ public class PokerFacilitator : MonoBehaviour
     [SerializeField] private PlayerHand m_playerHand;
     [SerializeField] private CPUHand m_cpuHand;
     [SerializeField] private InputField m_betField;
+    [SerializeField] private GameProgressViewer m_gameProgressViewer;
     public static int ChangeCount = 1;
 
     private enum GameState
@@ -55,6 +56,7 @@ public class PokerFacilitator : MonoBehaviour
                 break;
 
             case GameState.Change:
+                m_gameProgressViewer.SetGameChangeText();
 
                 if (ChangeCount < 1)
                 {
@@ -62,7 +64,7 @@ public class PokerFacilitator : MonoBehaviour
                 }
                 break;
             case GameState.Bet:
-
+                m_gameProgressViewer.SetGameBetText();
                 m_betField.enabled = true;
 
                 break;
@@ -86,6 +88,22 @@ public class PokerFacilitator : MonoBehaviour
 
 
                 }
+                else
+                {
+                    if (m_playerHand.PlayerHightCardNumber > m_cpuHand.CPUHightCardNumber)
+                    {
+                        PlayerWin = true;
+                        PlayerCoin += BetCoin;
+                        CPUCoin -= BetCoin;
+                    }
+                    else
+                    {
+                        PlayerWin = false;
+                        PlayerCoin -= BetCoin;
+                        CPUCoin += BetCoin;
+                    }
+                }
+                m_gameProgressViewer.SetGameJudgeText(PlayerWin,m_playerHand.PlayerJudgeHand,m_cpuHand.CPUJudgeHand);
                 ChangeCount++;
                 BetCoin = 0;
 
@@ -119,14 +137,9 @@ public class PokerFacilitator : MonoBehaviour
     public void BetInput()
     {
         BetCoin = int.Parse(m_betField.text);
-        if (BetCoin > 0)
-        {
+        
+        
             m_gameState = GameState.Judge;
-        }
-        else
-        {
-            m_gameState = GameState.Init;
         }
     }
 
-}
